@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>hello world</title>
+        <script src="./vue.js"></script>
+    </head>
+    <body>
+        <div id="app">
+            <counter ref='one' @change='handleChange'></counter>
+            <counter ref='two' @change='handleChange'></counter>
+            <div>{{total}}</div>
+        </div>
+        <script>
+            //组件的本质就是将一个html封装成一个vue实例对象，所有的组件都是一样的，包含的对象属性结构也一样
+            //new Vue作为根组件，其他作为子组件，根组件和子组件的对象结构相同，但是表达的方式不同
+            //这里data属性作为一个函数出现，返回一个对象，这个对象就是这个组件所包含的所有要绑定的数据
+            //每个组件实例都包含一套data属性，而不共享
+            Vue.component('counter', {
+                template:'<div @click="handleClick">{{number}}</div>',
+                data:function(){
+                    return {number:0}
+                },
+                methods:{
+                    handleClick:function(){
+                        this.number++;
+                        this.$emit('change', this.number)
+                    }
+                }
+            })
+            
+            //refs引用，指向一个html引用对象，html标签中添加ref属性；
+            //ref可以是一个html标签，那ref就是一个dom对象；
+            //可以是一个组件，那ref就是一个vue实例，可以直接访问其中的数据
+            var app = new Vue({
+                el:'#app',
+                data: {
+                    total:0
+                },
+                methods: {
+                    handleChange: function(){
+                        this.total = this.$refs.one.number + this.$refs.two.number
+                    }
+                }
+            })
+        </script>
+    </body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>hello world</title>
+        <script src="./vue.js"></script>
+    </head>
+    <body>
+        <div id="app">
+            <input type='text' v-model="fullName"/>
+            <!-- <button @click='handleBtn'>提交</button> -->
+            <div>{{firstName}}</div>
+            <div>{{lastName}}</div>
+        </div>
+        <script>
+            
+            var app = new Vue({
+                el:'#app',
+                data: {
+                    firstName: 'daniel',
+                    lastName: 'hunt',
+                    fullName1: ''
+                },
+                computed: {
+                    //计算属性，给计算属性添加get和set方法
+                    //前者时当获取该属性数据时进行的操作，后者是对该属性修改时进行的操作
+                    fullName:{
+                        //fullName1作为中间缓冲区，获取缓冲区的值，设值也设在缓冲区
+                        get:function(){
+                            return this.fullName1;
+                        },
+                        set:function(value){
+                            array = value.split(' ')
+                            this.firstName = array[0]
+                            this.lastName = array[1]
+                            this.fullName1 = value
+                        }
+                    }
+                }
+            })
+        </script>
+    </body>
+</html>

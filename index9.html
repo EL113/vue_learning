@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>hello world</title>
+        <script src="./vue.js"></script>
+    </head>
+    <style>
+        .color-red {
+            color: red;
+        }
+    </style>
+    <body>
+        <div id="app">
+            <!--:class类赋值一个对象数组，数组变量的值可以赋值为一个样式名称-->
+            <!--:style类赋值一个对象数组，数组变量对象结构和style结构相同-->
+            <div @click="handleClass" :class="[isColorRed]">{{firstName}}</div>
+            <div @click="handleStyle" :style="[styleObject, {fontSize:'20px'}]">{{lastName}}</div>
+        </div>
+
+        <script>
+            var app = new Vue({
+                el:'#app',
+                data: {
+                    firstName: 'daniel',
+                    lastName: 'hunt',
+                    isColorRed:'',
+                    styleObject:{
+                        color:"black"
+                    }
+                },
+                methods: {
+                    handleClass:function(){
+                        this.isColorRed = this.isColorRed =="color-red" ? '' : "color-red"
+                    },
+                    handleStyle:function(){
+                        this.styleObject.color = this.styleObject.color == 'red' ? 'black' : 'red'
+                        // alert(this.styleObject.color == 'red')
+                    }
+                }
+            })
+        </script>
+    </body>
+</html>

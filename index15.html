@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>hello world</title>
+        <script src="./vue.js"></script>
+    </head>
+    <body>
+        <div id="app">
+            <component :is='type'></component>
+            <button @click='toggleType'>button</button>
+
+            <child-one v-if='type=="child-one"'></child-one>
+            <child-two v-else></child-two>
+        </div>
+        <script>
+            //父组件向子组件中传递html标签，如果没有传递，则显示slot之间的表情按内容
+            Vue.component('child-one', {
+                template:
+                    `<div v-once>
+                        child-one
+                    </div>`,
+            })
+
+            //再template中添加v-once指令表示渲染一次后再内存中缓存，而不用重新渲染
+            Vue.component('child-two', {
+                template:
+                    `<div v-once>
+                        child-two
+                    </div>`,
+            })
+
+            var app = new Vue({
+                el:'#app',
+                data:{
+                    type:'child-one'
+                },
+                methods:{
+                    toggleType:function(){
+                        this.type = this.type === 'child-one' ? 'child-two' : 'child-one'
+                    }
+                }
+            })
+        </script>
+    </body>
+</html>

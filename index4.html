@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>hello world</title>
+        <script src="./vue.js"></script>
+    </head>
+    <body>
+        <div id="app">
+            <input type="text" v-model="inputValue"/>
+            <button v-on:click="handleBtnClick">提交</button>
+            <ul>
+                <!--直接在组件定义@事件名表示监听该事件，并定义在事件监听到时的回调-->
+                <todo-item v-bind:content="item" 
+                           v-bind:index="index"     
+                           v-for="(item, index) in list"
+                           @delete="handleDelete"/>
+            </ul>
+        </div>
+        <script>
+            //直接在模板template中定义点击事件，再点击事件中通过this.$emit(事件名称, 事件附带的参数)，触发一个事件
+            //在父组件外部监听这个事件，并定义该事件被捕捉时的回调事件
+            //单项数据流：子组件不可以直接修改从父组件传过来的content值，只能将其赋值给data中的属性，然后修改这个data属性
+            var TodoItem = {
+                //props的属性校验，可以给属性添加各种校验性质
+                props:{
+                    content:{
+                        type:[String,Number],
+                        required:true,
+                        defalut:'default value',
+                        validator:function(value){
+                            return value.length > 5
+                        }
+                   }, 
+                   index:{
+                       type:Number
+                   }
+                },
+                data:function(){
+                    return {
+                        contentItem:this.content
+                    }
+                },
+                template:"<li @click='handleClick'>{{contentItem}}</li>",
+                methods: {
+                    handleClick:function(){
+                        this.$emit('delete', this.index);
+                    }
+                }
+            }
+            var app = new Vue({
+                el:'#app',
+                components: {
+                    TodoItem: TodoItem
+                },
+                data: {
+                    list:['第一课','第二课','第三课','第四课'],
+                    inputValue:''
+                },
+                methods: {
+                    handleBtnClick: function(){
+                        this.list.push(this.inputValue)
+                        this.inputValue = ''
+                    },
+                    //事件回调函数可以接受事件参数，如果触发时有附带的话
+                    handleDelete: function(index){
+                        this.list.splice(index, 1)
+                    }
+                }
+            })
+        </script>
+    </body>
+</html>

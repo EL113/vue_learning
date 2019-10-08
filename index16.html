@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>hello world</title>
+        <script src="./vue.js"></script>
+        <!--animated和velocity的动画效果-->
+    </head>
+    <style>
+        .v-enter {
+            opacity: 0;
+        }
+        .v-enter-active {
+            transition: opacity 3s;
+        }
+        .v-leave-to {
+            opacity: 0;
+        }
+        .v-leave-active {
+            transition: opacity 3s;
+        }
+    </style>
+    <body>
+        <div id="app">
+            <!--动画的三个生命周期函数，mode定义切换的先后顺序，out-in就是先出场再进场-->
+            <!--如果需要添加循环的进场动画的操作，则对整个列表添加transition-group的标签，会对每个新增的标签上添加transition的标签-->
+            <transition mode="out-in" @before-enter="handleBeforeEnter"
+                @enter="handleEnter" @after-enter="handleAfter">
+                <component :is='type'></component>
+            </transition>
+
+            <transition enter-active-class="" leave-active-class="">
+                <component :is='type'></component>
+            </transition>
+            <button @click='toggleType'>button</button>
+
+        </div>
+        <script>
+            //在要发生改变的组件上添加transition标签，会自动给相应组件添加入场和出场的class类
+            //v-enter入场时的样式、v-enter-active入场时长、v-leave-to出场的最终样式、v-leave-active出场时长
+            Vue.component('child-one', {
+                template:
+                    `<div v-once>
+                        child-one
+                    </div>`,
+            })
+
+            Vue.component('child-two', {
+                template:
+                    `<div v-once>
+                        child-two
+                    </div>`,
+            })
+
+            //可以通过这几个生命周期函数来编写js代码实现动画效果el表示那个组件实例，可以访问style对象修改样式
+            var app = new Vue({
+                el:'#app',
+                data:{
+                    type:'child-one'
+                },
+                methods:{
+                    toggleType:function(){
+                        this.type = this.type === 'child-one' ? 'child-two' : 'child-one'
+                    },
+                    handleAfter:function(el){
+
+                    },
+                    handleBeforeEnter:function(el){
+
+                    },
+                    handleEnter:function(el, done){
+                        done()
+                    }
+                }
+            })
+        </script>
+    </body>
+</html>

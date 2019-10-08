@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>hello world</title>
+        <script src="./vue.js"></script>
+    </head>
+    <body>
+        <div id="app">
+            <counter>
+                <h1 slot="header">header</h1>
+                <h1 slot="footer">footer</h1>
+            </counter>
+
+            <!--values接收从子组件插槽传过来的值再values变量中，在这里就是item存在values中-->
+            <child>
+                <h1 slot-scope='values'>{{values.item}}</h1>
+            </child>
+        </div>
+        <script>
+            //父组件向子组件中传递html标签，如果没有传递，则显示slot之间的表情按内容
+            //父组件来决定如何渲染子组件
+            Vue.component('counter', {
+                template:
+                    `<div>
+                        <slot name='header'><h1>defalut head</h1></slot>
+                        <div>body</div>
+                        <slot name='footer'><h1>defalut foot</h1></slot>
+                    </div>`,
+            })
+
+            //子组件插槽可以向父组件传递数据，然后由父组件决定如何渲染
+            //在这里，通过:item向父组件传递数据
+            Vue.component('child', {
+                template:
+                    `<div>
+                        <slot v-for='item in list' :item=item><h1>defalut head</h1></slot>
+                    </div>`,
+                data:function(){
+                    return {
+                        list:[1,2,3,4,5]
+                    }
+                }
+            })
+
+            var app = new Vue({
+                el:'#app'
+            })
+        </script>
+    </body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>hello world</title>
+        <script src="./vue.js"></script>
+    </head>
+    <body>
+        <div id="app">
+            <input type="text" v-model="inputValue"/>
+            <button v-on:click="handleBtnClick">提交</button>
+            <!--templat作为循环占位符，渲染时只循环渲染template的子元素，
+                如果采用其他形式则v-for所在的标签也会被循环渲染-->
+            <!--key值作为渲染的标签的唯一值-->
+            <template v-for="(item,index) in list">
+                <div :key="index">
+                    {{item.name}} -- {{index}}
+                </div>
+                <span>
+                    {{item.name}}
+                </span>
+            </template>
+        </div>
+        <script>
+            //循环数据：v-for属性重复所在标签，并访问data中的列表里面的数据
+            //数据绑定：标签添加v-model 属性可以和data里面的属性绑定
+            
+            //事件绑定：标签添加v-on:事件名称 可以和methods中的事件名称绑定，methods中的函数访问data中的
+            //数据访问需要添加this
+            //只有通过调用list的变异方法改变list的值才能触发vue的数据绑定，从而渲染页面
+            //通过调用Vue.set(app.list, 5, {name:'第五'})，或者实例的方法app.$set(app.list, 5, {name:'第五'})
+            var app = new Vue({
+                el:'#app',
+                data: {
+                    list:[{name:'第一课'},{name:'第二课'},{name:'第三课'},{name:'第四课'}],
+                    inputValue:''
+                },
+                methods: {
+                    handleBtnClick: function(){
+                        this.list.push(this.inputValue)
+                        this.inputValue = ''
+                    }
+                }
+            })
+        </script>
+    </body>
+</html>

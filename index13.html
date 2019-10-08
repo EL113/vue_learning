@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>hello world</title>
+        <script src="./vue.js"></script>
+    </head>
+    <body>
+        <div id="app">
+            <counter v-for="(item,index) in list" :content="item" :id='index' :key='index'></counter>
+        </div>
+        <script>
+            //非父子组件传值，通过在原型上再定义一个名为bus的vue实例，所有组件上都拥有这个实例
+            //通过向这个bus实例上调用emit方法触发事件向其他组件传值
+            //再mounted方法上调用bus.on方法监听其他组件的事件
+            Vue.prototype.bus = new Vue()
+
+            Vue.component('counter', {
+                props:{content:Number, id:Number},
+                template:'<div @click="handleClick">{{selfContent}}</div>',
+                data:function(){
+                    return {selfContent:this.content, selfId:this.id}
+                },
+                methods:{
+                    handleClick:function(){
+                        // alert('emit:'+this.selfId)
+                        this.bus.$emit("change", this.selfId)
+                    }
+                },
+                mounted:function(){
+                    var this_ = this
+                    this.bus.$on('change', function(msg){
+                        // alert('receive:'+msg+','+this_.selfId)
+                        if(msg != this_.selfId){
+                            this_.selfContent++
+                        }
+                    })
+                }
+            })
+
+            var app = new Vue({
+                el:'#app',
+                data:{
+                    list:[0, 1]
+                }
+            })
+        </script>
+    </body>
+</html>

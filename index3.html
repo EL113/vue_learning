@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>hello world</title>
+        <script src="./vue.js"></script>
+    </head>
+    <body>
+        <div id="app">
+            <input type="text" v-model="inputValue"/>
+            <button v-on:click="handleBtnClick">提交</button>
+            <ul>
+                <!--通过v-bind属性将父组件数据传入组件属性中, 左边是组件属性，右边是父组件数据变量-->
+                <todo-item v-bind:content="item" v-for="item in list"/>
+            </ul>
+        </div>
+        <script>
+            //全局组件，通过以下方式定义一个组件，组件名 - 对象
+            //对象中props表示可以从父组件传入的属性名称，template表示html模板，可以加入插值表达式传入数据
+            //不需要额外的操作，局部逐渐需要向app对象中注册组件
+            // Vue.component("TodoItem", {
+                // props:['content'],
+                // template:"<li>{{content}}</li>"
+            // })
+
+            //局部组件，子组件vue实例需要在父组件vue实例对象中注册后才能在父组件中使用
+            //从父组件中传入数据需要在标签中加入v-bind属性绑定组件属性名和外部属性名称
+            var TodoItem = {
+                props:['content'],
+                template:"<li>{{content}}</li>"
+            }
+            //从本质上来说，无论是全局组件还是局部组件，组件最后都会编译成一个vue实例，所以用vue编写项目就是在编写组件
+            //就算是用new vue()得到的vue实例，也只是将页面上的某一个标签作为template得到的vue实例，通过el属性指定模板
+            //vue就是将一个页面布局封装并托管成一个vue实例，可以对实例进行传值，事件等操作
+            //因此通常可以将一个整个页面封装托管成一个vue实例对象，然后向其中注册很多其他组件
+            var app = new Vue({
+                el:'#app',
+                components: {
+                    TodoItem: TodoItem
+                },
+                data: {
+                    list:['第一课','第二课','第三课','第四课'],
+                    inputValue:''
+                },
+                methods: {
+                    handleBtnClick: function(){
+                        this.list.push(this.inputValue)
+                        this.inputValue = ''
+                    }
+                }
+            })
+        </script>
+    </body>
+</html>

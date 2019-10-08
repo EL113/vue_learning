@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>hello world</title>
+        <script src="./vue.js"></script>
+    </head>
+    <body>
+        <div id="app">
+            <!--vue模板语法，vue的模板语法对等号右边的字符串解析成vue的变量名称，并对变量值进行不同方式的解析，
+            并且可以在右边等号中的值进行js表达式-->
+            <div v-text='htmlText'></div>
+            <div v-html='htmlText'></div>
+            <div>{{htmlText}}</div>
+            <div>{{htmlText + ' this is html'}}</div>
+        </div>
+        <script>
+            
+            var app = new Vue({
+                el:'#app',
+                data: {
+                    htmlText: '<b>bold text</b>'
+                }
+            })
+        </script>
+    </body>
+</html>

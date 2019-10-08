@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>hello world</title>
+        <script src="./vue.js"></script>
+    </head>
+    <body>
+        <div id="app">
+            <!--在组件上监听事件，是直接监听组件触发出来的事件，而不是html原生的事件，如果要监听原生事件，添加native修饰符-->
+            <!--组件自身的原生事件是在templat上设置监听-->
+            <counter ref='one' @click.native='handleChange1'></counter>
+            <counter ref='two' @change='handleChange'></counter>
+            <div>{{total}}</div>
+        </div>
+        <script>
+            
+            Vue.component('counter', {
+                template:'<div @click="handleClick">{{number}}</div>',
+                data:function(){
+                    return {number:0}
+                },
+                methods:{
+                    handleClick:function(){
+                        this.number++;
+                        this.$emit('change', this.number)
+                    }
+                }
+            })
+
+            var app = new Vue({
+                el:'#app',
+                data: {
+                    total:0
+                },
+                methods: {
+                    handleChange: function(){
+                        this.total = this.$refs.one.number + this.$refs.two.number
+                    },
+                    handleChange1: function(){
+                        alert("clicked")
+                    }
+                }
+            })
+        </script>
+    </body>
+</html>

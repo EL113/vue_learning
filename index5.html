@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>hello world</title>
+        <script src="./vue.js"></script>
+    </head>
+    <body>
+        <div id="app">
+            <input type="text" v-model="inputValue"/>
+        </div>
+        <script>
+            
+            var app = new Vue({
+                el:'#app',
+                data: {
+                    inputValue:''
+                },
+                //vue的生命周期函数
+                methods: {
+                    //初始化事件和生命周期后调用
+                    beforeCreate: function(){
+                        log.console('beforeCreate')
+                    },
+                    //初始化数据注入后调用
+                    created: function(index){
+                        log.console('created')
+                    },
+                    //确认el和template属性是否存在，存在则编译template，否则编译el，后调用
+                    beforeMount:function(){
+                        log.console('beforeMount')
+                    },
+                    //将el的值赋给vm.$el
+                    mounted:function(){
+                        log.console('mounted')
+                    },
+                    //当双向绑定的数据属性被修改后调用
+                    beforeUpdate:function(){
+                        log.console('beforeUpdate')
+                    },
+                    //双向绑定的数据被修改，页面被重新渲染后调用
+                    updated:function(){
+                        log.console('updated')
+                    },
+                    //当vm.$destroy方法被调用时
+                    beforeDestroy:function(){
+                        log.console('beforeDestroy')
+                    },
+                    //当vm实例完全被销毁时
+                    destroy:function(){
+                        log.console('beforeDestroy')
+                    }
+                }
+            })
+        </script>
+    </body>
+</html>

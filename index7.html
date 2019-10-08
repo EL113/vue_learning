@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>hello world</title>
+        <script src="./vue.js"></script>
+    </head>
+    <body>
+        <div id="app">
+            {{fullNameComputed}}
+            {{fullNameMethod}}
+            {{fullNameWatch}}
+        </div>
+        <script>
+            
+            var app = new Vue({
+                el:'#app',
+                data: {
+                    firstName: 'daniel',
+                    lastName: 'hunt',
+                    fullName: 'daniel hunt'
+                },
+                computed: {
+                    //计算属性，页面只渲染一次，有缓存，只有相关的属性修改时才会渲染第二次，
+                    //只有firstName和lastName被修改后才会再次渲染页面
+                    fullNameComputed:function(){
+                        return 'computed:' + this.firstName +' '+this.lastName;
+                    }
+                },
+                methods:{
+                    //方法，一旦有数据被修改（不一定是相关变量被改变时），只要有页面被渲染，这里就会重新计算
+                    fullNameMethod:function(){
+                        return 'method:' + this.firstName +' '+this.lastName;
+                    }
+                },
+                watch:{
+                    //监听属性，被监听的属性被修改时就触发方法，偏复杂
+                    fullNameWatch:function(){
+                        this.fullNameWatch = 'watch:' + this.firstName +' '+this.lastName;
+                    }
+                }
+            })
+        </script>
+    </body>
+</html>

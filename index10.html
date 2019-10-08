@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>hello world</title>
+        <script src="./vue.js"></script>
+    </head>
+    <style>
+        .color-red {
+            color: red;
+        }
+    </style>
+    <body>
+        <div id="app">
+            <!--if条件渲染等号右边是一个条件表达式,多个if条件渲染的标签需要靠在一起，如果被阻隔会报错-->
+            <!--show条件渲染无论是true还是false，在dom上都会体现出来，只是display属性会变成none-->
+            <div v-if="show=='firstName'" @click="handleClass" :class="[isColorRed]">{{firstName}}</div>
+            <div v-else-if="show=='lastName'" @click="handleStyle" :style="[styleObject, {fontSize:'20px'}]">{{lastName}}</div>
+            <div v-else="show=='fullName'">{{fullName}}</div>
+            <div v-show="show=='fullName'">{{firstName}}</div>
+        </div>
+
+        <script>
+            var app = new Vue({
+                el:'#app',
+                data: {
+                    firstName: 'daniel',
+                    lastName: 'hunt',
+                    isColorRed:'',
+                    styleObject:{
+                        color:"black"
+                    }
+                },
+                methods: {
+                    handleClass:function(){
+                        this.isColorRed = this.isColorRed =="color-red" ? '' : "color-red"
+                    },
+                    handleStyle:function(){
+                        this.styleObject.color = this.styleObject.color == 'red' ? 'black' : 'red'
+                    }
+                }
+            })
+        </script>
+    </body>
+</html>
